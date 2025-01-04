@@ -1,6 +1,7 @@
 import datetime
 import logging
 import re
+import os
 import shlex
 
 import astroplan
@@ -537,13 +538,13 @@ def read(
         if "repositioning" in line.keys():
             if (
                 line["repositioning"].startswith("t")
-                or line["repositioning"].startswith("1")
+                or line["repositioning"] == "1"
                 or line["repositioning"].startswith("y")
             ):
                 repositioning = (-1, -1)
             elif (
                 line["repositioning"].startswith("f")
-                or line["repositioning"].startswith("0")
+                or line["repositioning"] == "0"
                 or line["repositioning"].startswith("n")
             ):
                 repositioning = (0, 0)
@@ -846,7 +847,7 @@ def read(
                 blocks.append(
                     astroplan.ObservingBlock(
                         target=obj,
-                        duration=temp_dur,
+                        duration=temp_dur+5*u.second,
                         priority=priority,
                         name=source_name,
                         configuration={
